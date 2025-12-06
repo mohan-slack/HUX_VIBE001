@@ -35,7 +35,7 @@ export const Home = () => {
     {
       text: "INTELLIGENCE WORN.",
       subtitle: "The Future of Wellness",
-      img: "https://images.unsplash.com/photo-1617038224721-f76f060fddd5?q=80&w=3132&auto=format&fit=crop"
+      img: "https://raw.githubusercontent.com/mohan-slack/HUX_VIBE001/main/public/images/heroSection/hero-01.png"
     },
     {
       text: "SLEEP MASTERED.",
@@ -397,7 +397,7 @@ export const Home = () => {
                     <div className="relative z-10 p-6 flex flex-col items-center w-full transition-transform duration-700 group-hover:-translate-y-2 group-focus:-translate-y-2">
                       
                       {/* Icon Container - Spins and Colors on Hover */}
-                      <div className={`mb-4 p-4 rounded-full bg-white/5 backdrop-blur-md text-white border border-white/10 group-hover:bg-hux-turquoise group-focus:bg-hux-turquoise group-hover:text-white group-focus:text-white group-hover:border-hux-turquoise group-focus:border-hux-turquoise transition-all duration-500 shadow-lg group-hover:scale-110 group-focus:scale-110 group-hover:rotate-[360deg] group-focus:rotate-[360deg]`}>
+                      <div className={`mb-4 p-4 rounded-full bg-white/5 backdrop-blur-md text-white border border-white/10 group-hover:bg-hux-turquoise group-focus:bg-hux-turquoise group-hover:text-white group-focus:text-white group-hover:border-hux-turquoise group-focus:border-hux-turquoise transition-all duration-500 shadow-lg group-hover:scale-110 group-focus:scale-110 group-hover:animate-bounce group-focus:animate-bounce`}>
                          <feature.icon size={32} strokeWidth={1.5} aria-hidden="true" />
                       </div>
                       
