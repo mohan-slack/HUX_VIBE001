@@ -1,39 +1,53 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ChevronRight, ChevronLeft, Plus, Play, Moon, Activity, Zap, Star, ArrowRight, Heart, Brain, Box, Rotate3d, Move, Fingerprint, ShieldAlert, Wind, Bell, TrendingUp, Cpu, Battery, Wifi, Droplets, PackageOpen } from 'lucide-react';
+import { ChevronRight, ChevronLeft, Plus, Play, Moon, Activity, Zap, Star, ArrowRight, Heart, Brain, Box, Rotate3d, Move, Fingerprint, ShieldAlert, Wind, Bell, TrendingUp, Cpu, Battery, Wifi, Droplets, PackageOpen, Ruler, Palette, CheckCircle, ShoppingBag, Smartphone, Magnet, Cable, Sparkles } from 'lucide-react';
 import { Button } from '../components/Button';
 import { useShop } from '../context/ShopContext';
 import { HUX_PRODUCT } from '../constants';
 import { ProductColor, RingSize } from '../types';
 import { MasonryGrid } from '../components/MasonryGrid';
+import AnimatedSections from '../components/AnimatedSections';
+
+const ExpandableSpecsItem = ({ title, items }: { title: string, items: string[] }) => {
+  const [expanded, setExpanded] = useState(false);
+  const previewCount = 3;
+
+  return (
+    <div className="group hover:-translate-x-2 transition-transform duration-300 flex flex-col items-center lg:items-end">
+       <h4 className="font-bold text-hux-dark font-display text-lg mb-1 group-hover:text-hux-turquoise transition-colors">{title}</h4>
+       <p className="text-neutral-500 font-light leading-relaxed max-w-xs text-center lg:text-right transition-all duration-300">
+         {expanded ? items.join(', ') : items.slice(0, previewCount).join(', ') + '...'}
+       </p>
+       <button
+         onClick={() => setExpanded(!expanded)}
+         className="mt-2 text-[10px] font-bold text-hux-turquoise uppercase tracking-widest hover:text-hux-turquoiseDark transition-colors flex items-center gap-1 border-b border-transparent hover:border-hux-turquoise"
+       >
+         {expanded ? 'Show Less' : 'Show More'}
+       </button>
+    </div>
+  );
+};
 
 export const Home = () => {
   const { addToCart } = useShop();
 
-  // --- HERO SLIDER STATE ---
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const slides = [
+  // --- HERO SECTIONS DATA (GSAP) ---
+  const heroSections = [
     {
-      title: "Intelligence Worn.",
+      text: "INTELLIGENCE WORN.",
       subtitle: "The Future of Wellness",
-      desc: "Precision sensors meet aerospace titanium.",
-      bgImage: "https://images.unsplash.com/photo-1617038224721-f76f060fddd5?q=80&w=3132&auto=format&fit=crop",
-      accent: "text-white"
+      img: "https://images.unsplash.com/photo-1617038224721-f76f060fddd5?q=80&w=3132&auto=format&fit=crop"
     },
     {
-      title: "Sleep Mastered.",
-      subtitle: "Wake Up Ready",
-      desc: "Clinical-grade sleep staging in your sleep.",
-      bgImage: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=2940&auto=format&fit=crop",
-      accent: "text-hux-ivory"
+      text: "SLEEP MASTERED.",
+      subtitle: "Clinical Grade Analysis",
+      img: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=2940&auto=format&fit=crop"
+    },
+    {
+      text: "DESIGN DISAPPEARS.",
+      subtitle: "Aerospace Titanium",
+      img: "https://images.unsplash.com/photo-1615655406736-b37c4fabf923?q=80&w=2000&auto=format&fit=crop"
     }
   ];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, [slides.length]);
 
   // --- RING CARD EXPANSION STATE ---
   const [expandedCard, setExpandedCard] = useState<string | null>(null);
@@ -41,9 +55,9 @@ export const Home = () => {
   // --- ECOSYSTEM ACCORDION STATE ---
   const [activeTab, setActiveTab] = useState(0);
   const ecosystemItems = [
-    { title: "Sleep", desc: "Understand your sleep cycles with clinical precision.", icon: Moon, image: "https://images.unsplash.com/photo-1541781777631-faaf537cdd92?auto=format&fit=crop&q=80&w=1000" },
-    { title: "Activity", desc: "Track movement, steps, and caloric burn effortlessly.", icon: Activity, image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&q=80&w=1000" },
-    { title: "Recovery", desc: "Know exactly when to push and when to rest.", icon: Zap, image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&q=80&w=1000" }
+    { title: "Sleep", desc: "Understand your sleep cycles with clinical precision.", icon: Moon, image: "https://images.unsplash.com/photo-1541781777631-faaf53273e86?q=80&w=1000&auto=format&fit=crop" },
+    { title: "Activity", desc: "Track movement, steps, and caloric burn effortlessly.", icon: Activity, image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=1000&auto=format&fit=crop" },
+    { title: "Recovery", desc: "Know exactly when to push and when to rest.", icon: Zap, image: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=1000&auto=format&fit=crop" }
   ];
 
   // --- GALLERY STATE ---
@@ -90,101 +104,168 @@ export const Home = () => {
       desc: "Navigate your digital world with subtle finger taps.", 
       icon: Fingerprint, 
       border: "border-cyan-400",
-      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-man-working-on-a-holographic-screen-32724-large.mp4" 
+      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-man-working-on-a-holographic-screen-32724-large.mp4",
+      imageUrl: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=800&auto=format&fit=crop"
     },
     { 
       title: "SOS Alert", 
       desc: "Triple-tap to instantly alert contacts with GPS location.", 
       icon: ShieldAlert, 
       border: "border-red-500",
-      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-man-dialing-emergency-number-on-smartphone-4262-large.mp4"
+      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-man-dialing-emergency-number-on-smartphone-4262-large.mp4",
+      imageUrl: "https://images.unsplash.com/photo-1555421689-d68471e189f2?q=80&w=800&auto=format&fit=crop"
     },
     { 
       title: "Heart & HRV", 
       desc: "Clinical-grade monitoring during every run and rest.", 
       icon: Heart, 
       border: "border-rose-400",
-      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-silhouette-of-a-person-running-during-sunset-1711-large.mp4"
+      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-silhouette-of-a-person-running-during-sunset-1711-large.mp4",
+      imageUrl: "https://images.unsplash.com/photo-1552674605-469555f96752?q=80&w=800&auto=format&fit=crop"
     },
     { 
       title: "Stress Detection", 
       desc: "Real-time autonomic nervous system analysis.", 
       icon: Activity, 
       border: "border-orange-400",
-      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-girl-practicing-meditation-at-home-44670-large.mp4"
+      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-girl-practicing-meditation-at-home-44670-large.mp4",
+      imageUrl: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?q=80&w=800&auto=format&fit=crop"
     },
     { 
       title: "AI Insights", 
       desc: "Predictive wellness that adapts to your daily lifestyle.", 
       icon: Brain, 
       border: "border-violet-500",
-      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-motherboard-circuit-texture-loop-3221-large.mp4"
+      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-motherboard-circuit-texture-loop-3221-large.mp4",
+      imageUrl: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=800&auto=format&fit=crop"
     },
     { 
       title: "Mindful Balance", 
       desc: "Dedicated Yoga modes to center your mind and body.", 
       icon: Wind, 
       border: "border-emerald-400",
-      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-woman-practicing-yoga-pose-on-the-beach-4061-large.mp4"
+      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-woman-practicing-yoga-pose-on-the-beach-4061-large.mp4",
+      imageUrl: "https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?q=80&w=800&auto=format&fit=crop"
     },
     { 
       title: "Vibration Alerts", 
       desc: "Discrete haptic notifications. Wake up silently.", 
       icon: Bell, 
       border: "border-amber-400",
-      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-close-up-of-a-woman-sleeping-in-bed-4258-large.mp4"
+      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-close-up-of-a-woman-sleeping-in-bed-4258-large.mp4",
+      imageUrl: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=800&auto=format&fit=crop"
     },
     { 
-      title: "Performance Mode", 
-      desc: "Push your limits. Analyze workouts with precision data.", 
-      icon: TrendingUp, 
+      title: "Smart Touch Control", 
+      desc: "Control music, take photos, and present slides remotely.", 
+      icon: Smartphone, 
       border: "border-hux-turquoise",
-      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-man-doing-crossfit-exercises-with-a-kettlebell-280-large.mp4"
+      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-close-up-of-a-woman-typing-on-a-smartphone-4261-large.mp4",
+      imageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=800&auto=format&fit=crop"
     },
   ];
 
   const huxTestimonials = [
     {
-      name: 'Elena K.',
-      role: 'Yoga Instructor',
-      feedback: "HUX captures my recovery data without interrupting my flow. It's invisible tech.",
-      image: "https://images.unsplash.com/photo-1544367563-12123d8959f9?auto=format&fit=crop&w=800&q=80",
-      avatar: "https://randomuser.me/api/portraits/women/44.jpg"
-    },
-    {
-      name: 'Marcus Thorne',
-      role: 'Crossfit Athlete',
-      feedback: "The durability is unmatched. Titanium that actually survives the gym.",
-      image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=800&q=80",
+      name: 'Arjun Reddy',
+      role: 'Tech Lead, Bengaluru',
+      feedback: "Survives the chaos of Bengaluru traffic and intense coding sprints. The sleep data helps me optimize my recovery after late-night deployments.",
+      image: "https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=800&q=80",
       avatar: "https://randomuser.me/api/portraits/men/32.jpg"
     },
     {
-      name: 'Sarah Jenkins',
-      role: 'Creative Director',
-      feedback: "Finally, a wearable that matches my evening wear. The gold finish is exquisite.",
-      image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80",
+      name: 'Lakshmi Iyer',
+      role: 'Carnatic Vocalist, Chennai',
+      feedback: "During the Margazhi season, my stress levels peak. HUX helps me monitor my HRV and stay calm before concerts. It looks elegant with my Kanjeevarams.",
+      image: "https://images.unsplash.com/photo-1621786040886-2a79247eb108?auto=format&fit=crop&w=800&q=80",
+      avatar: "https://randomuser.me/api/portraits/women/44.jpg"
+    },
+    {
+      name: 'Vihaan Rao',
+      role: 'Entrepreneur, Hyderabad',
+      feedback: "Perfect for the boardrooms of Hitech City. The Sterling Gold finish is a conversation starter during networking events.",
+      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=800&q=80",
+      avatar: "https://randomuser.me/api/portraits/men/54.jpg"
+    },
+    {
+      name: 'Dr. Anjali Menon',
+      role: 'Wellness Consultant, Kochi',
+      feedback: "I advocate for a blend of modern data and traditional wellness. HUX tracks my vitals without emitting constant EMF radiation like watches.",
+      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80",
+      avatar: "https://randomuser.me/api/portraits/women/33.jpg"
+    },
+    {
+      name: 'Karthik Naidu',
+      role: 'Marine Engineer, Vizag',
+      feedback: "The waterproof rating is legit. I swim at Rushikonda beach every morning and track my laps. Titanium holds up against the salt air.",
+      image: "https://images.unsplash.com/photo-1543781299-a467f339487c?auto=format&fit=crop&w=800&q=80",
+      avatar: "https://randomuser.me/api/portraits/men/46.jpg"
+    },
+    {
+      name: 'Zara Mistry',
+      role: 'Fashion Stylist, Mumbai',
+      feedback: "Finally, wearable tech that doesn't clash with couture. I wear the Lunar Rose ring to every gala and shoot.",
+      image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=800&q=80",
       avatar: "https://randomuser.me/api/portraits/women/68.jpg"
     },
     {
-      name: 'Dr. Aris V.',
-      role: 'Sleep Specialist',
-      feedback: "The sleep staging accuracy rivals clinical polysomnography equipment.",
-      image: "https://images.unsplash.com/photo-1531366936337-7c912a4589a7?auto=format&fit=crop&w=800&q=80",
-      avatar: "https://randomuser.me/api/portraits/men/56.jpg"
+      name: 'Rohan Malhotra',
+      role: 'Marathoner, Delhi',
+      feedback: "Tracks my winter runs near India Gate accurately. The SpO2 data helped me acclimatize for my Ladak trip.",
+      image: "https://images.unsplash.com/photo-1552674605-469555f96752?auto=format&fit=crop&w=800&q=80",
+      avatar: "https://randomuser.me/api/portraits/men/22.jpg"
     },
     {
-      name: 'James Chen',
-      role: 'Architect',
-      feedback: "Minimalism at its finest. Data when I want it, silence when I need it.",
-      image: "https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?auto=format&fit=crop&w=800&q=80",
-      avatar: "https://randomuser.me/api/portraits/men/86.jpg"
+      name: 'Nithin Gowda',
+      role: 'Coffee Planter, Coorg',
+      feedback: "Rugged enough for the plantation, smart enough for my health. The battery life lasts through my week-long treks.",
+      image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=800&q=80",
+      avatar: "https://randomuser.me/api/portraits/men/11.jpg"
     },
     {
-      name: 'Priya Patel',
-      role: 'Marathon Runner',
-      feedback: "Lightweight and precise. I forget I'm wearing it until I check my stats.",
-      image: "https://images.unsplash.com/photo-1483721310020-03333e577078?auto=format&fit=crop&w=800&q=80",
-      avatar: "https://randomuser.me/api/portraits/women/22.jpg"
+      name: 'Meera Reddy',
+      role: 'Architect, Telangana',
+      feedback: "Minimalist design fits my aesthetic. I sketch for hours, and unlike a watch, the ring never gets in the way of my wrist movement.",
+      image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800&q=80",
+      avatar: "https://randomuser.me/api/portraits/women/89.jpg"
+    },
+    {
+      name: 'Siddharth Pillai',
+      role: 'Chef, Kerala',
+      feedback: "Kitchens are hot and frantic. HUX monitors my stress and stands up to constant hand washing. Essential gear.",
+      image: "https://images.unsplash.com/photo-1577219491135-ce391730fb2c?auto=format&fit=crop&w=800&q=80",
+      avatar: "https://randomuser.me/api/portraits/men/78.jpg"
+    }
+  ];
+
+  const sizingSteps = [
+    { 
+      step: "01", 
+      title: "Measure", 
+      desc: "Take a thread, wrap it around your forefinger, mark the ends, measure the distance, and determine your size using a ruler.", 
+      icon: Ruler,
+      img: "https://images.unsplash.com/photo-1590486803833-1c5dc8ddd4c8?q=80&w=800&auto=format&fit=crop" 
+    },
+    { 
+      step: "02", 
+      title: "Try a Sizing Kit", 
+      desc: "Order a free HUX sizing kit to find your exact fit before you buy your smart ring.", 
+      icon: PackageOpen,
+      img: "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=800&auto=format&fit=crop"
+    },
+    { 
+      step: "03", 
+      title: "Choose Color", 
+      desc: "Select your favorite color from our exclusive smart ring collection.", 
+      icon: Palette,
+      img: "https://images.unsplash.com/photo-1615655406736-b37c4fabf923?q=80&w=800&auto=format&fit=crop"
+    },
+    { 
+      step: "04", 
+      title: "Place Your Order", 
+      desc: "Confirm your exact size and color, then place your order to get your HUX Smart Ring delivered.", 
+      icon: ShoppingBag,
+      img: "https://images.unsplash.com/photo-1556742102-803310306c4b?q=80&w=800&auto=format&fit=crop"
     }
   ];
 
@@ -193,67 +274,8 @@ export const Home = () => {
          onMouseUp={handleMouseUp}
          onTouchEnd={handleMouseUp}>
       
-      {/* 1. HERO SECTION - ADVANCED SLIDER */}
-      <section className="relative h-screen w-full overflow-hidden">
-        {slides.map((slide, index) => (
-          <div 
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${index === currentSlide ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}
-          >
-             {/* Background with Parallax */}
-             <div 
-               className="absolute inset-0 bg-cover bg-center transform scale-105 transition-transform duration-[10000ms] ease-linear"
-               style={{ 
-                 backgroundImage: `url(${slide.bgImage})`,
-                 transform: index === currentSlide ? 'scale(110)' : 'scale(100)'
-               }}
-             />
-             <div className="absolute inset-0 bg-black/40"></div>
-             
-             {/* Content */}
-             <div className="relative h-full max-w-7xl mx-auto px-6 flex items-center">
-               <div className={`max-w-2xl space-y-6 transform transition-all duration-1000 delay-300 ${index === currentSlide ? 'translate-y-0 opacity-100' : 'translate-y-20 opacity-0'}`}>
-                 <span className="inline-block py-1 px-3 border border-white/30 rounded-full text-xs font-bold uppercase tracking-widest text-white backdrop-blur-md">
-                   {slide.subtitle}
-                 </span>
-                 <h1 className="text-6xl md:text-8xl font-display font-bold text-white leading-tight">
-                   {slide.title.split(' ')[0]} <br/>
-                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-hux-turquoise to-white">
-                     {slide.title.split(' ')[1]}
-                   </span>
-                 </h1>
-                 <p className="text-xl text-neutral-200 max-w-md font-light">
-                   {slide.desc}
-                 </p>
-                 <div className="pt-8 flex gap-4">
-                   <Button variant="primary">Shop Now</Button>
-                   <Button variant="glass" className="text-white border-white hover:bg-white hover:text-hux-dark">Watch Film <Play size={14} className="ml-2 fill-current"/></Button>
-                 </div>
-               </div>
-
-               {/* Right Side 3D Card Stack Visual */}
-               <div className="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-1/3 h-1/2 perspective-1000">
-                  <div className={`relative w-full h-full transition-all duration-1000 ${index === currentSlide ? 'rotate-y-0 opacity-100' : 'rotate-y-12 opacity-0'}`}>
-                     {/* Decorative Floating Cards */}
-                     <div className="absolute top-0 right-10 w-64 h-80 glass-card rounded-3xl transform rotate-12 translate-z-12 animate-float"></div>
-                     <div className="absolute top-10 right-20 w-64 h-80 bg-gradient-to-br from-hux-turquoise to-blue-600 rounded-3xl opacity-90 transform -rotate-6 translate-z-0 shadow-2xl animate-float" style={{animationDelay: '1s'}}></div>
-                  </div>
-               </div>
-             </div>
-          </div>
-        ))}
-        
-        {/* Slider Controls */}
-        <div className="absolute bottom-10 left-6 md:left-20 z-20 flex gap-2">
-           {slides.map((_, i) => (
-             <button 
-               key={i} 
-               onClick={() => setCurrentSlide(i)}
-               className={`h-1 transition-all duration-300 rounded-full ${i === currentSlide ? 'w-12 bg-hux-turquoise' : 'w-4 bg-white/50 hover:bg-white'}`}
-             />
-           ))}
-        </div>
-      </section>
+      {/* 1. HERO SECTION - ANIMATED SECTIONS (GSAP) */}
+      <AnimatedSections sections={heroSections} />
 
       {/* 2. 360 STUDIO SECTION */}
       <section className="py-24 bg-white overflow-hidden relative">
@@ -333,42 +355,57 @@ export const Home = () => {
           <div className="text-center mb-24 space-y-4">
             <h2 className="text-sm font-bold text-hux-turquoise uppercase tracking-widest">Capabilities</h2>
             <h3 className="text-4xl md:text-6xl font-display font-bold">The Ring of Life.</h3>
-            <p className="text-xl text-neutral-400 max-w-2xl mx-auto">Hover to explore the technology woven into your lifestyle.</p>
+            <p className="text-xl text-neutral-400 max-w-2xl mx-auto">Hover or focus to explore the technology woven into your lifestyle.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-16">
             {featuresList.map((feature, i) => (
-              <div key={i} className="group relative aspect-square cursor-pointer perspective-1000">
+              <div 
+                key={i} 
+                tabIndex={0}
+                role="article"
+                aria-label={`${feature.title}. ${feature.desc}`}
+                className={`group relative aspect-square cursor-pointer perspective-1000 transition-all duration-500 ${i % 2 === 1 ? 'lg:translate-y-16' : ''} outline-none rounded-full focus:ring-4 focus:ring-hux-turquoise focus:ring-offset-4 focus:ring-offset-hux-dark`}
+              >
                  {/* The 'O' Element - Circular Container that Morphs */}
-                 <div className={`absolute inset-0 rounded-full group-hover:rounded-[2.5rem] border-[2px] border-white/10 ${feature.border} group-hover:border-[1px] bg-black overflow-hidden flex flex-col items-center justify-center text-center z-10 transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] shadow-2xl group-hover:shadow-[0_0_80px_rgba(2,179,217,0.3)] transform group-hover:scale-105`}>
+                 <div className={`absolute inset-0 rounded-full group-hover:rounded-[2.5rem] group-focus:rounded-[2.5rem] border-[2px] border-white/10 ${feature.border} group-hover:border-[1px] group-focus:border-[1px] bg-black overflow-hidden flex flex-col items-center justify-center text-center z-10 transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] shadow-2xl group-hover:shadow-[0_0_80px_rgba(2,179,217,0.3)] group-focus:shadow-[0_0_80px_rgba(2,179,217,0.3)] transform group-hover:scale-[1.15] group-focus:scale-[1.15] group-hover:z-50 group-focus:z-50`}>
                     
-                    {/* Background Video - Transitions from Grayscale to Color */}
+                    {/* Background Image - Always visible base layer */}
+                    <img 
+                      src={feature.imageUrl} 
+                      alt=""
+                      aria-hidden="true" 
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 group-focus:scale-110 brightness-110"
+                    />
+                    
+                    {/* Background Video - Overlays image */}
                     <video 
                       autoPlay muted loop playsInline 
-                      className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-100 grayscale group-hover:grayscale-0 transition-all duration-700 transform group-hover:scale-110"
+                      aria-hidden="true"
+                      className="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-100 group-focus:opacity-100 transition-opacity duration-700 grayscale group-hover:grayscale-0 group-focus:grayscale-0"
                     >
                       <source src={feature.videoUrl} type="video/mp4" />
                     </video>
                     
-                    {/* Dark Overlay that fades out on hover */}
-                    <div className="absolute inset-0 bg-black/60 group-hover:bg-black/20 transition-colors duration-700"></div>
+                    {/* Dark Overlay that fades out on hover - Lighter */}
+                    <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 group-focus:bg-black/10 transition-colors duration-700"></div>
                     
-                    {/* Vignette for cinematic feel */}
-                    <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/80 opacity-80 pointer-events-none"></div>
+                    {/* Vignette for cinematic feel - Reduced opacity */}
+                    <div className="absolute inset-0 bg-radial-gradient from-transparent to-black/80 opacity-40 pointer-events-none"></div>
                     
                     {/* Content Layer */}
-                    <div className="relative z-10 p-6 flex flex-col items-center w-full transition-transform duration-700 group-hover:-translate-y-2">
+                    <div className="relative z-10 p-6 flex flex-col items-center w-full transition-transform duration-700 group-hover:-translate-y-2 group-focus:-translate-y-2">
                       
                       {/* Icon Container - Spins and Colors on Hover */}
-                      <div className={`mb-4 p-4 rounded-full bg-white/5 backdrop-blur-md text-white border border-white/10 group-hover:bg-hux-turquoise group-hover:text-white group-hover:border-hux-turquoise transition-all duration-500 shadow-lg group-hover:scale-110 group-hover:rotate-[360deg]`}>
-                         <feature.icon size={32} strokeWidth={1.5} />
+                      <div className={`mb-4 p-4 rounded-full bg-white/5 backdrop-blur-md text-white border border-white/10 group-hover:bg-hux-turquoise group-focus:bg-hux-turquoise group-hover:text-white group-focus:text-white group-hover:border-hux-turquoise group-focus:border-hux-turquoise transition-all duration-500 shadow-lg group-hover:scale-110 group-focus:scale-110 group-hover:rotate-[360deg] group-focus:rotate-[360deg]`}>
+                         <feature.icon size={32} strokeWidth={1.5} aria-hidden="true" />
                       </div>
                       
-                      <h4 className="text-xl font-bold font-display text-white mb-2 drop-shadow-lg tracking-wide group-hover:scale-105 transition-transform duration-500">{feature.title}</h4>
+                      <h4 className="text-xl font-bold font-display text-white mb-2 drop-shadow-lg tracking-wide group-hover:scale-105 group-focus:scale-105 transition-transform duration-500">{feature.title}</h4>
                       
                       {/* Description Slide Up */}
-                      <div className="h-0 group-hover:h-auto overflow-hidden transition-all duration-700 ease-in-out w-4/5">
-                         <div className="pt-2 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                      <div className="h-0 group-hover:h-auto group-focus:h-auto overflow-hidden transition-all duration-700 ease-in-out w-4/5">
+                         <div className="pt-2 opacity-0 group-hover:opacity-100 group-focus:opacity-100 transform translate-y-4 group-hover:translate-y-0 group-focus:translate-y-0 transition-all duration-500 delay-100">
                            <p className="text-xs text-neutral-100 leading-relaxed font-medium drop-shadow-md bg-black/20 backdrop-blur-md p-3 rounded-xl border border-white/5">
                              {feature.desc}
                            </p>
@@ -420,13 +457,93 @@ export const Home = () => {
          </div>
       </section>
 
+      {/* 4.5 NEW: CHARGING DOCK SECTION */}
+      <section className="py-24 bg-neutral-900 text-white relative overflow-hidden">
+        {/* Background glow effects */}
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-hux-turquoise/20 rounded-full blur-[120px]"></div>
+
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center relative z-10">
+          
+          {/* Visual */}
+          <div className="relative group">
+            <div className="absolute inset-0 bg-hux-turquoise/20 blur-3xl opacity-30 group-hover:opacity-50 transition-opacity"></div>
+            <img 
+               src="https://images.unsplash.com/photo-1585338107529-13afc5f02586?q=80&w=1000&auto=format&fit=crop" 
+               alt="HUX Charging Dock" 
+               className="relative w-full rounded-3xl shadow-2xl border border-white/10 z-10 brightness-75 contrast-125"
+            />
+            {/* Overlay indicators */}
+            <div className="absolute bottom-10 left-10 z-20 flex gap-2">
+               <div className="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_10px_#4ade80] animate-pulse"></div>
+               <div className="w-2 h-2 rounded-full bg-neutral-600"></div>
+               <div className="w-2 h-2 rounded-full bg-neutral-600"></div>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="space-y-8">
+             <div className="space-y-4">
+               <h2 className="text-sm font-bold text-hux-turquoise uppercase tracking-widest">Power - Charging Dock</h2>
+               <h3 className="text-4xl md:text-5xl font-display font-bold">Infinite Power. <br/>Zero Friction.</h3>
+               <p className="text-neutral-400 text-lg leading-relaxed">
+                 A charging experience as seamless as the ring itself. The magnetic dock aligns perfectly every time, providing a full week of power in just 45 minutes.
+               </p>
+             </div>
+
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* Feature 1 */}
+                <div className="flex gap-4">
+                   <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-hux-turquoise">
+                      <Magnet size={24} />
+                   </div>
+                   <div>
+                      <h4 className="font-bold text-white mb-1">Magnetic Alignment</h4>
+                      <p className="text-sm text-neutral-400">Precision magnets snap into place.</p>
+                   </div>
+                </div>
+                {/* Feature 2 */}
+                <div className="flex gap-4">
+                   <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-hux-turquoise">
+                      <Cable size={24} />
+                   </div>
+                   <div>
+                      <h4 className="font-bold text-white mb-1">USB-C Fast Charge</h4>
+                      <p className="text-sm text-neutral-400">Universal standard. Rapid delivery.</p>
+                   </div>
+                </div>
+                 {/* Feature 3 */}
+                <div className="flex gap-4">
+                   <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-hux-turquoise">
+                      <Box size={24} />
+                   </div>
+                   <div>
+                      <h4 className="font-bold text-white mb-1">Compact Design</h4>
+                      <p className="text-sm text-neutral-400">Fits in your coin pocket.</p>
+                   </div>
+                </div>
+                 {/* Feature 4 */}
+                <div className="flex gap-4">
+                   <div className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-hux-turquoise">
+                      <Sparkles size={24} />
+                   </div>
+                   <div>
+                      <h4 className="font-bold text-white mb-1">Matte Finish</h4>
+                      <p className="text-sm text-neutral-400">Premium touch. Fingerprint resistant.</p>
+                   </div>
+                </div>
+             </div>
+          </div>
+
+        </div>
+      </section>
+
       {/* 5. SMART ECOSYSTEM ACCORDION */}
       <section id="ecosystem" className="py-24 bg-white">
          <div className="max-w-7xl mx-auto px-6">
             <div className="flex flex-col lg:flex-row gap-16 items-center">
                
                {/* Left: Text Accordion */}
-               <div className="lg:w-1/2 space-y-2">
+               <div className="w-full lg:w-1/2 space-y-2">
                   <h2 className="text-5xl font-display font-bold text-hux-dark mb-12">Total Body<br/>Intelligence</h2>
                   {ecosystemItems.map((item, idx) => (
                     <div 
@@ -446,7 +563,7 @@ export const Home = () => {
                </div>
 
                {/* Right: Image Swap */}
-               <div className="lg:w-1/2 h-[600px] relative rounded-[3rem] overflow-hidden shadow-2xl">
+               <div className="w-full lg:w-1/2 h-[400px] lg:h-[600px] relative rounded-[3rem] overflow-hidden shadow-2xl">
                   {ecosystemItems.map((item, idx) => (
                      <div 
                        key={idx}
@@ -488,26 +605,60 @@ export const Home = () => {
 
       {/* 7. EXPANDING GALLERY */}
       <section className="py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-6 h-[500px] flex gap-4">
+          <div className="max-w-7xl mx-auto px-6 h-[500px] flex flex-col md:flex-row gap-4">
               {[
-                { title: "Social", img: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=1000" },
-                { title: "Work", img: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&q=80&w=1000" },
-                { title: "Rest", img: "https://images.unsplash.com/photo-1520206183501-b80df61043c2?auto=format&fit=crop&q=80&w=1000" },
-                { title: "Play", img: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&q=80&w=1000" }
+                { 
+                  title: "Design", 
+                  desc: "Minimal. Futuristic. HUX",
+                  img: "https://images.unsplash.com/photo-1494500764479-0c8f2919a3d8?auto=format&fit=crop&q=80&w=1000"
+                },
+                { 
+                  title: "Precision Sensors", 
+                  desc: "Nano-grade accuracy in every measurement",
+                  img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=1000"
+                },
+                { 
+                  title: "Wellness AI", 
+                  desc: "New insights. More clarity",
+                  img: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=1000"
+                },
+                { 
+                  title: "Privacy", 
+                  desc: "Your data. Always yours.",
+                  img: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000"
+                }
               ].map((item, idx) => (
                   <div 
                     key={idx}
                     onClick={() => setActiveGallery(idx)}
-                    className={`relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 ease-in-out ${activeGallery === idx ? 'flex-[4]' : 'flex-[1]'} bg-neutral-100`}
+                    className={`relative rounded-3xl overflow-hidden cursor-pointer transition-all duration-500 ease-in-out ${activeGallery === idx ? 'flex-[4]' : 'flex-[1]'} bg-neutral-100 group`}
                   >
                      <div 
-                       className="absolute inset-0 bg-cover bg-center transition-transform duration-700 hover:scale-105"
+                       className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                        style={{ backgroundImage: `url(${item.img})` }}
                      />
-                     <div className={`absolute inset-0 bg-black/30 transition-opacity ${activeGallery === idx ? 'opacity-0' : 'opacity-50 hover:opacity-30'}`}></div>
-                     <div className="absolute bottom-8 left-8 text-white">
-                        <h3 className={`font-bold text-2xl ${activeGallery === idx ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'} transition-all duration-500`}>{item.title}</h3>
+                     <div className={`absolute inset-0 bg-black/40 transition-opacity ${activeGallery === idx ? 'opacity-20' : 'opacity-60 hover:opacity-40'}`}></div>
+                     
+                     <div className="absolute bottom-8 left-8 text-white max-w-xs">
+                        <h3 className={`font-bold text-2xl mb-2 ${activeGallery === idx ? 'opacity-100 translate-y-0' : 'opacity-100 md:opacity-0 md:translate-y-4'} transition-all duration-500`}>
+                          {item.title}
+                        </h3>
+                        <p className={`text-base font-light text-neutral-100 leading-relaxed ${activeGallery === idx ? 'opacity-100 translate-y-0 delay-100' : 'opacity-0 translate-y-4'} transition-all duration-500`}>
+                          {item.desc}
+                        </p>
                      </div>
+                     
+                     {/* Mobile Label */}
+                     <div className={`absolute bottom-8 left-8 md:hidden ${activeGallery !== idx ? 'block' : 'hidden'}`}>
+                        <h3 className="font-bold text-xl text-white">{item.title}</h3>
+                     </div>
+                     
+                     {/* Vertical Text for Inactive Desktop Cards */}
+                     {activeGallery !== idx && (
+                       <div className="hidden md:block absolute bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap -rotate-90 origin-center opacity-70 font-bold text-white tracking-widest uppercase text-xs">
+                          {item.title}
+                       </div>
+                     )}
                   </div>
               ))}
           </div>
@@ -529,10 +680,10 @@ export const Home = () => {
                     <h4 className="font-bold text-hux-dark font-display text-lg mb-1 group-hover:text-hux-turquoise transition-colors">Name</h4>
                     <p className="text-neutral-500 font-light">HUX-NEXus Smart Ring</p>
                   </div>
-                   <div className="group hover:-translate-x-2 transition-transform duration-300">
-                    <h4 className="font-bold text-hux-dark font-display text-lg mb-1 group-hover:text-hux-turquoise transition-colors">Features</h4>
-                    <p className="text-neutral-500 font-light leading-relaxed">Heart Rate, SpO₂, Temperature, Sleep, Stress, Activity, Recovery, VO₂ Max, Strain</p>
-                  </div>
+                   <ExpandableSpecsItem 
+                     title="Features" 
+                     items={["Heart Rate", "SpO₂", "Temperature", "Sleep", "Stress", "Activity", "Recovery", "VO₂ Max", "Strain"]} 
+                   />
                    <div className="group hover:-translate-x-2 transition-transform duration-300">
                     <h4 className="font-bold text-hux-dark font-display text-lg mb-1 group-hover:text-hux-turquoise transition-colors">Material</h4>
                     <p className="text-neutral-500 font-light">Titanium Alloy with Liquid Glass Coating</p>
@@ -610,7 +761,7 @@ export const Home = () => {
          </div>
       </section>
 
-      {/* 9. NEW: UNBOXING EXPERIENCE */}
+      {/* 9. UNBOXING EXPERIENCE */}
       <section className="py-24 bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-6">
            <div className="text-center mb-16 space-y-4">
@@ -623,17 +774,17 @@ export const Home = () => {
                 { 
                   name: "HUX Smart Ring", 
                   desc: "Your ultimate health companion that tracks you 24/7 — seamlessly, stylishly, and smartly.",
-                  img: "https://images.unsplash.com/photo-1622434641406-a158123450f9?auto=format&fit=crop&q=80&w=600" // Close-up ring/tech shot
+                  img: "https://images.unsplash.com/photo-1622434641406-a158123450f9?auto=format&fit=crop&q=80&w=600"
                 },
                 { 
                   name: "Charging Case", 
                   desc: "Compact and durable magnetic cradle for fast and safe charging.",
-                  img: "https://images.unsplash.com/photo-1623945233182-4467d162c933?auto=format&fit=crop&q=80&w=600" // White case aesthetic
+                  img: "https://images.unsplash.com/photo-1623945233182-4467d162c933?auto=format&fit=crop&q=80&w=600"
                 },
                 { 
                   name: "User Manual", 
                   desc: "Step-by-step guide to help you set up and experience HUX with ease.",
-                  img: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600" // Minimal booklet
+                  img: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=600"
                 }
               ].map((item, idx) => (
                 <div key={idx} className="group flex flex-col items-center text-center">
@@ -650,8 +801,54 @@ export const Home = () => {
         </div>
       </section>
 
-      {/* 10. REVIEWS MASONRY GRID */}
-      <section className="py-24 bg-hux-ivory overflow-hidden">
+      {/* 10. NEW: PRECISION SIZING GUIDE */}
+      <section className="py-32 bg-white relative overflow-hidden">
+         {/* Background decorative elements */}
+         <div className="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+
+         <div className="max-w-7xl mx-auto px-6 relative z-10">
+            <div className="text-center mb-24 space-y-4">
+               <h2 className="text-sm font-bold text-hux-turquoise uppercase tracking-widest">Fit Guide</h2>
+               <h3 className="text-5xl md:text-6xl font-display font-bold text-hux-dark">Find Your Perfect Fit</h3>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+               {sizingSteps.map((item, idx) => (
+                  <div key={idx} className="group relative bg-white rounded-[2.5rem] p-0 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 border border-neutral-100 overflow-hidden flex flex-col h-full">
+                     
+                     {/* Image Header Area */}
+                     <div className="relative h-48 overflow-hidden">
+                       <img src={item.img} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                       <div className="absolute inset-0 bg-black/10 group-hover:bg-black/0 transition-colors"></div>
+                       
+                       {/* Floating 'Sign' Badge */}
+                       <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-20 h-20 bg-white rounded-2xl shadow-xl flex items-center justify-center border-4 border-white z-20 group-hover:scale-110 transition-transform duration-500">
+                          <item.icon size={32} className="text-hux-turquoise" strokeWidth={2} />
+                       </div>
+                     </div>
+
+                     <div className="pt-16 pb-10 px-8 text-center flex-1 flex flex-col items-center relative">
+                       {/* Step Number Watermark */}
+                       <div className="absolute top-2 right-4 text-6xl font-display font-bold text-neutral-100 select-none -z-0">
+                          {item.step}
+                       </div>
+
+                       <h4 className="text-2xl font-display font-bold text-hux-dark mb-4 relative z-10">{item.title}</h4>
+                       <p className="text-sm text-neutral-500 leading-relaxed relative z-10">{item.desc}</p>
+                     </div>
+                     
+                     {/* Bottom accent line */}
+                     <div className="h-1.5 w-full bg-neutral-100 mt-auto">
+                        <div className="h-full bg-hux-turquoise w-0 group-hover:w-full transition-all duration-700 ease-in-out"></div>
+                     </div>
+                  </div>
+               ))}
+            </div>
+         </div>
+      </section>
+
+      {/* 11. REVIEWS MASONRY GRID */}
+      <section className="py-24 bg-white overflow-hidden">
          <div className="max-w-7xl mx-auto px-6">
             <div className="text-center mb-16">
                <h2 className="text-sm font-bold text-hux-turquoise uppercase tracking-widest">Community</h2>
@@ -660,7 +857,7 @@ export const Home = () => {
             
             <MasonryGrid columns={columns} gap={6}>
               {huxTestimonials.map((review, idx) => (
-                <div key={idx} className="relative rounded-3xl overflow-hidden group transition-all duration-300 hover:shadow-2xl border border-white/50">
+                <div key={idx} className="relative rounded-3xl overflow-hidden group transition-all duration-300 hover:shadow-2xl border border-neutral-100">
                   <img
                     src={review.image}
                     alt={review.name}

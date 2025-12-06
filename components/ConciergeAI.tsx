@@ -1,7 +1,56 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Sparkles, MessageSquareText } from 'lucide-react';
+import { X, Send } from 'lucide-react';
 import { generateResponse } from '../services/geminiService';
 import { ChatMessage } from '../types';
+
+const GoldRingIcon = ({ className, size = 24 }: { className?: string; size?: number }) => (
+  <svg 
+    width={size} 
+    height={size} 
+    viewBox="0 0 24 24" 
+    fill="none" 
+    xmlns="http://www.w3.org/2000/svg" 
+    className={className}
+  >
+    <defs>
+      <linearGradient id="goldGradient" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+        <stop offset="0%" stopColor="#FDE68A" />
+        <stop offset="25%" stopColor="#D4AF37" />
+        <stop offset="50%" stopColor="#F59E0B" />
+        <stop offset="75%" stopColor="#D4AF37" />
+        <stop offset="100%" stopColor="#FDE68A" />
+      </linearGradient>
+      <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+        <feGaussianBlur stdDeviation="1" result="blur" />
+        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+      </filter>
+    </defs>
+    {/* Ring Body */}
+    <circle 
+      cx="12" 
+      cy="12" 
+      r="7" 
+      stroke="url(#goldGradient)" 
+      strokeWidth="3.5" 
+      filter="url(#glow)"
+    />
+    {/* Inner Shadow/Depth */}
+    <circle 
+      cx="12" 
+      cy="12" 
+      r="7" 
+      stroke="rgba(0,0,0,0.1)" 
+      strokeWidth="1" 
+    />
+    {/* Sensor Bump Details */}
+    <path 
+      d="M12 17.5C12.8 17.5 13.5 17 13.5 17" 
+      stroke="url(#goldGradient)" 
+      strokeWidth="2" 
+      strokeLinecap="round" 
+    />
+  </svg>
+);
 
 export const ConciergeAI = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -50,9 +99,9 @@ export const ConciergeAI = () => {
       {/* Floating Button */}
       <button 
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-8 right-8 z-40 bg-white border border-hux-turquoise/20 p-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all group ${isOpen ? 'hidden' : 'flex'}`}
+        className={`fixed bottom-8 right-8 z-40 bg-white border border-hux-gold/30 p-4 rounded-full shadow-xl hover:shadow-2xl hover:scale-110 transition-all group ${isOpen ? 'hidden' : 'flex'} items-center justify-center`}
       >
-        <MessageSquareText className="text-hux-turquoise" />
+        <GoldRingIcon size={28} />
         <span className="absolute right-full mr-4 bg-hux-dark text-white text-xs font-bold px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">
           HUX AI
         </span>
@@ -63,9 +112,9 @@ export const ConciergeAI = () => {
         <div className="fixed bottom-8 right-8 z-50 w-full max-w-[360px] h-[550px] glass rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-slideUp ring-1 ring-white/50">
           {/* Header */}
           <div className="p-4 border-b border-white/50 flex justify-between items-center bg-white/40">
-            <div className="flex items-center gap-2">
-              <div className="bg-gradient-to-br from-hux-turquoise to-blue-500 p-1.5 rounded-lg text-white">
-                <Sparkles size={14} />
+            <div className="flex items-center gap-3">
+              <div className="bg-white/80 p-1.5 rounded-lg border border-neutral-100 shadow-sm">
+                <GoldRingIcon size={18} />
               </div>
               <h3 className="font-display font-bold text-hux-dark text-sm">HUX AI</h3>
             </div>
