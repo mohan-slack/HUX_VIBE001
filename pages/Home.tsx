@@ -35,17 +35,17 @@ export const Home = () => {
     {
       text: "INTELLIGENCE WORN.",
       subtitle: "The Future of Wellness",
-      img: "https://raw.githubusercontent.com/mohan-slack/HUX_VIBE001/main/public/images/heroSection/hero-01.png"
+      img: "images/heroSection/hero-01.png"
     },
     {
       text: "SLEEP MASTERED.",
       subtitle: "Clinical Grade Analysis",
-      img: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=2940&auto=format&fit=crop"
+      img: "images/heroSection/hero-02.png"
     },
     {
       text: "DESIGN DISAPPEARS.",
       subtitle: "Aerospace Titanium",
-      img: "https://images.unsplash.com/photo-1615655406736-b37c4fabf923?q=80&w=2000&auto=format&fit=crop"
+      img: "images/heroSection/hero-03.png"
     }
   ];
 
